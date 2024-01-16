@@ -1,0 +1,79 @@
+{% load socialaccount %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Chat App</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1em;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        hr {
+            margin: 20px 0;
+            border: 0;
+            border-top: 1px solid #ccc;
+        }
+
+        h2, h3, h4 {
+            color: #333;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .logout-link {
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>My Chat App</h1>
+</header>
+
+<main>
+    <hr>
+
+    {% if request.user.is_authenticated %}
+        <h2>CONGRATS :)</h2>
+        <h3>You Are Logged in!</h3>
+        <h4>WELCOME TO DASHBOARD!</h4>
+        <a href="http://localhost:8000/chat/">CHAT</a>
+        <p></p>
+        <a href="{% url 'account_logout' %}" class="logout-link">Log Out</a>
+    {% else %}
+        <h3>You Are Logged Out!</h3>
+        <p>Link to log in: <a href="http://localhost:8000/auth/login/">LOGIN</a></p>
+    {% endif %}
+</main>
+
+</body>
+</html>

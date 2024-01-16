@@ -1,0 +1,7 @@
+export SECRET_KEY=django-insecure-wt*jwzzbvlj6!!upc#l3_pg1-wa6@q!n+vw87%qzjq)45gc@8j
+export MY_BASE_URL=http://127.0.0.1:8000
+export ASSETS_ROOT= /static/assets
+export DEBUG = True
+export DATABASE_NAME=chatapp
+export DATABASE_USER=11111
+export DATABASE_PASSWORD=!11111!

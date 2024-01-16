@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Chat App</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1em;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2, h3 {
+            color: #333;
+        }
+
+        #chat-log {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        #chat-message-input {
+            width: 70%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        #send-button {
+            padding: 10px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+        }
+
+        #send-button:hover {
+            background-color: #0056b3;
+        }
+
+        #home-button {
+            padding: 10px;
+            cursor: pointer;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+        }
+
+        #home-button:hover {
+            background-color: #218838;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>My Chat App</h1>
+</header>
+
+<main>
+    {% if request.user.is_authenticated %}
+        <h2>My Chat Room</h2>
+        <div id="chat-log"></div>
+        <input id="chat-message-input" type="text" placeholder="Type your message...">
+        <button id="send-button" onclick="sendMessage()">Send</button>
+        <br><br><br>
+        <button id="home-button" onclick="window.location.href='http://localhost:8000';">HOME</button>
+
+        <script>
+            const chatLog = document.getElementById('chat-log');
+            const messageInput = document.getElementById('chat-message-input');
+            const socket = new WebSocket('ws://' + window.location.host + `/chat/ws/chat/`);
+
+            socket.onmessage = function (event) {
+                const message = JSON.parse(event.data).message;
+                appendMessage(message);
+            };
+
+            function appendMessage(message) {
+                const p = document.createElement('p');
+                p.innerText = message;
+                chatLog.appendChild(p);
+            }
+
+            function sendMessage() {
+                const message = messageInput.value;
+                if (message.trim() !== '') {
+                    socket.send(JSON.stringify({'message': message}));
+                    messageInput.value = '';  // Clear the input field after sending the message
+                }
+            }
+        </script>
+
+    {% else %}
+        <h3>You Are Logged Out!</h3>
+        <p>Link to log in: <a href="http://localhost:8000/auth/login/">LOGIN</a></p>
+    {% endif %}
+</main>
+
+</body>
+</html>
